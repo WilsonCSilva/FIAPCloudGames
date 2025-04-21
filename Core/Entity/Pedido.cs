@@ -6,8 +6,10 @@
         public required int LivroId { get; set; }
 
         #region [Navegação]
+
         public Cliente Cliente { get; set; }
         public Livro Livro { get; set; }
+
         #endregion
     }
 }

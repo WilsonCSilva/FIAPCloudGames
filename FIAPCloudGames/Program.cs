@@ -1,4 +1,6 @@
+using Core.Repository;
 using Infrastructure;
+using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,14 +17,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
-
 // 2 - Refernciar Infrastructure
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(configuration.GetConnectionString("ConnectionStrings"));
 }, ServiceLifetime.Scoped);
 
+//3 Injeção de dependência
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
+builder.Services.AddScoped<ILivroRepository, LivroRepository>();
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

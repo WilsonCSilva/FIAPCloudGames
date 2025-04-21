@@ -10,7 +10,7 @@ namespace Infrastructure.Repository.Configurations
         {
             builder.ToTable("Pedido");
             builder.HasKey(p => p.Id);
-            builder.Property(p => p.Id).HasColumnType("INT").ValueGeneratedNever().UseIdentityColumn();
+            builder.Property(p => p.Id).HasColumnType("INT").UseIdentityColumn();
             builder.Property(p => p.DataCriacao).HasColumnType("DATETIME").IsRequired();
             builder.Property(p => p.ClienteId).HasColumnType("INT");
             builder.Property(p => p.LivroId).HasColumnType("INT");

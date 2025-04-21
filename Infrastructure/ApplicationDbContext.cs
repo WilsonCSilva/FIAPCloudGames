@@ -1,5 +1,6 @@
 ﻿using Core.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure
 {
@@ -14,6 +15,12 @@ namespace Infrastructure
         //Construtor padrão para o EF Core para criação da migracão
         public ApplicationDbContext()
         {
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            _connectionString = configuration.GetConnectionString("connectionString");
         }
 
         public ApplicationDbContext(string connectionString)
