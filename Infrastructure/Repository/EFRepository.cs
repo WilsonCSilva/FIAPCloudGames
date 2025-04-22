@@ -16,7 +16,7 @@ namespace Infrastructure.Repository
             _context = context;
             _dbSet = _context.Set<T>(); //Binding direto da tabela com a entidade
         }
-
+         
         public void Alterar(T entidade)
         {
             _dbSet.Update(entidade);
