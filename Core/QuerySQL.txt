@@ -14,4 +14,4 @@ INSERT INTO Pedido (ClienteId, LivroId, DataCriacao) VALUES
 (1, 9, '2022-01-01'),
 (1, 8, GETDATE()),
 (1, 10, GETDATE()),
-(1, 11, GETDATE())
+(1, 11, GETDATE()) 
