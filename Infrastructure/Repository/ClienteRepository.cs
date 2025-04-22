@@ -1,6 +1,6 @@
 ﻿using Core.Entity;
+using Core.Input;
 using Core.Repository;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
@@ -12,25 +12,37 @@ namespace Infrastructure.Repository
         {
         }
 
-        public Cliente ObterPedidoSeisMeses(int id)
+        public ClienteDto ObterPedidoSeisMeses(int id)
         {
+            //Usando lazyloading
             var cliente = _context.Cliente
-                .Include(c => c.Pedidos)
-                .ThenInclude(p => p.Livro)
-                .FirstOrDefault(c => c.Id == id) //Where
-                ?? throw new Exception("Cliente não cadastrado."); 
+                .FirstOrDefault(c => c.Id == id)
+                ?? throw new Exception("Cliente não cadastrado.");
 
-            cliente.Pedidos = cliente.Pedidos
-                .Where(c => c.DataCriacao >= DateTime.Now.AddMonths(-6))
-                .Select(P =>
-                {
-                    P.Cliente = null; //Eliminar dependência ciclica, ou seja, não ficar buscando cliente, pois já passei na rota.
-                    P.Livro.Pedidos = null; //Não buscar os pedidos novamente
-                    return P;
-                })
-                .ToList();
-
-            return cliente;
+            return new ClienteDto()
+            {
+                Id = cliente.Id,
+                Nome = cliente.Nome,
+                DataCriacao = cliente.DataCriacao,
+                DataDeNascimento = cliente.DataDeNascimento,
+                CPF = cliente.CPF,
+                Pedidos = cliente.Pedidos
+                    .Where(p => p.DataCriacao >= DateTime.Now.AddMonths(-6))
+                    .Select(p => new PedidoDto()
+                    {
+                        Id = p.Id,
+                        DataCriacao = p.DataCriacao,
+                        LivroId = p.LivroId,
+                        ClienteId = p.ClienteId,
+                        Livro = new LivroDto()
+                        {
+                            Id = p.Livro.Id,
+                            DataCriacao = p.Livro.DataCriacao,
+                            Nome = p.Livro.Nome,
+                            Editora = p.Livro.Editora,
+                        }
+                    }).ToList()
+            };
         }
     }
 }

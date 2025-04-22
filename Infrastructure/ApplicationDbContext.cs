@@ -37,6 +37,7 @@ namespace Infrastructure
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(_connectionString);
+                optionsBuilder.UseLazyLoadingProxies();
             }
         }
 

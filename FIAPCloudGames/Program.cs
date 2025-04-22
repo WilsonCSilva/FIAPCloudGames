@@ -21,6 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(configuration.GetConnectionString("ConnectionStrings"));
+    options.UseLazyLoadingProxies();
 }, ServiceLifetime.Scoped);
 
 //3 Injeção de dependência

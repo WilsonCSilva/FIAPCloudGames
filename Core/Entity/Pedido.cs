@@ -7,8 +7,9 @@
 
         #region [Navegação]
 
-        public Cliente Cliente { get; set; }
-        public Livro Livro { get; set; }
+        //Virtual para poder usar lazy loading
+        public virtual Cliente Cliente { get; set; }
+        public virtual Livro Livro { get; set; }
 
         #endregion
     }
